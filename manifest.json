@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "RuClaude",
   "short_name": "RuClaude",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Blocks Claude until selected IP-country and optional time-zone checks pass; optionally presents a selected website language.",
   "minimum_chrome_version": "120",
   "permissions": [

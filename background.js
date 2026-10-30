@@ -18,8 +18,20 @@ async function ensureOffscreen() {
   await offscreenCreating;
 }
 async function webRTCCheck(expected) {
-  await ensureOffscreen();
-  const result=await chrome.runtime.sendMessage({type:'WEBRTC_PROBE'});
+  // Firefox MV3 has a document background context with RTCPeerConnection,
+  // while Chromium MV3 uses an offscreen document from its service worker.
+  let result;
+  if (chrome.offscreen?.hasDocument) {
+    await ensureOffscreen();
+    result = await chrome.runtime.sendMessage({type:'WEBRTC_PROBE'});
+  } else {
+    try {
+      const { probeWebRTC } = await import('./webrtc-probe.mjs');
+      result = { ok: true, ...await probeWebRTC() };
+    } catch (error) {
+      result = { ok: false, error: error?.message || String(error) };
+    }
+  }
   if (!result?.ok) throw Error('WebRTC: '+(result?.error||'check unavailable'));
   if (!result.addresses?.length) throw Error('WebRTC: unable to verify public UDP address (STUN blocked or unavailable)');
   if (result.addresses.some(ip=>ip.toLowerCase()!==expected.toLowerCase())) throw Error('WebRTC IP differs from VPN public IP: '+result.addresses.join(', '));

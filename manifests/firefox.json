@@ -1,0 +1,85 @@
+{
+  "manifest_version": 3,
+  "name": "RuClaude",
+  "short_name": "RuClaude",
+  "version": "1.0.1",
+  "description": "Blocks Claude until selected IP-country and optional time-zone checks pass; optionally presents a selected website language.",
+  "permissions": [
+    "storage",
+    "alarms",
+    "declarativeNetRequest",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://ipwho.is/*",
+    "https://ipapi.co/*",
+    "https://claude.ai/*",
+    "https://*.claude.ai/*",
+    "https://*.anthropic.com/*",
+    "https://*.claude.com/*"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
+    ],
+    "type": "module"
+  },
+  "action": {
+    "default_title": "RuClaude — проверка страны IP и таймзоны",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "default_deny",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "options_page": "popup.html",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://claude.ai/*",
+        "https://*.claude.ai/*"
+      ],
+      "js": [
+        "geo-main.js",
+        "language-main.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://claude.ai/*",
+        "https://*.claude.ai/*"
+      ],
+      "js": [
+        "geo-bridge.js"
+      ],
+      "run_at": "document_start",
+      "world": "ISOLATED"
+    }
+  ],
+  "author": "Auraxite",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "ruclaude@auraxite.github.io",
+      "strict_min_version": "128.0"
+    }
+  }
+}
