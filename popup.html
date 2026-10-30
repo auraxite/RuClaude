@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RuClaude</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header class="header">
+      <div class="logo" aria-hidden="true">
+        <img src="icons/icon128.png" alt="" width="42" height="42">
+      </div>
+      <div><h1>RuClaude</h1><p class="subtitle" data-i18n="subtitle">Геозащита для claude.ai</p></div>
+      <div class="header-right"><select id="language" aria-label="Язык / Language"><option value="ru">РУ</option><option value="en">EN</option></select><span class="version">1.0.0</span></div>
+    </header>
+
+    <section class="status-card status-blocked" id="statusCard" aria-live="polite">
+      <div class="status-top"><span id="statusDot" class="status-dot"></span><strong id="statusTitle" data-i18n="initialTitle">Доступ заблокирован</strong></div>
+      <p id="statusText" data-i18n="initialText">Выберите страну и часовой пояс для проверки.</p>
+    </section>
+
+    <section class="section">
+      <div class="section-title" data-i18n="rule">ПРАВИЛО ДОСТУПА</div>
+      <label for="country" data-i18n="countryLabel">Разрешённая страна</label>
+      <select id="country" aria-label="Разрешённая страна">
+        <option value="" data-i18n="chooseCountry">Выберите страну…</option>
+      </select>
+      <p class="hint" data-i18n="countryHint">Claude откроется только с IP этой страны.</p>
+
+      <label for="timezone" data-i18n="zoneLabel">Разрешённый часовой пояс</label>
+      <select id="timezone" aria-label="Разрешённый часовой пояс">
+        <option value="" data-i18n="chooseCountryFirst">Сначала выберите страну…</option>
+      </select>
+      <label class="check-row" for="considerTimezone"><input id="considerTimezone" type="checkbox" checked><span data-i18n="consider">Учитывать</span></label>
+      <p class="hint" id="zonePreview" data-i18n="zoneHint">Claude откроется только при совпадении часового пояса страны IP.</p>
+      <label for="siteLanguage" data-i18n="browserLanguageLabel">Язык для сайтов</label>
+      <select id="siteLanguage" aria-label="Язык для сайтов"></select>
+      <label class="check-row" for="considerLanguage"><input id="considerLanguage" type="checkbox"><span data-i18n="consider">Учитывать</span></label>
+      <p class="hint" data-i18n="browserLanguageHint">Claude откроется только при совпадении языка страны IP.</p>
+    </section>
+
+
+    <section class="section details-section">
+      <div class="section-title" data-i18n="lastCheck">ПОСЛЕДНЯЯ ПРОВЕРКА</div>
+      <div class="detail"><span data-i18n="publicIP">Публичный IP</span><strong id="ip">—</strong></div>
+      <div class="detail"><span data-i18n="ipCountry">Страна IP</span><strong id="actualCountry">—</strong></div>
+      <div class="detail"><span data-i18n="ipZone">Таймзона IP</span><strong id="actualZone">—</strong></div>
+      <div class="detail"><span data-i18n="webrtcResult">WebRTC</span><strong id="webRTCObserved">—</strong></div>
+      <div class="detail"><span data-i18n="checked">Проверено</span><strong id="checkedAt">—</strong></div>
+      <div class="detail"><span data-i18n="source">Источник</span><strong id="service">—</strong></div>
+      <div class="buttons">
+        <button id="check" class="button secondary" type="button" data-i18n="recheck">↻ Проверить снова</button>
+        <button id="lock" class="button secondary" type="button" data-i18n="lock">⛔ Закрыть доступ</button>
+      </div>
+      <button id="openClaude" class="button ghost" type="button" disabled data-i18n="openClaude">Открыть Claude ↗</button>
+      <button id="tipsLink" class="tips-link" type="button" data-i18n="tips">Советы по использованию ↗</button>
+    </section>
+    <p class="error" role="alert" id="error" hidden></p>
+  </main>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

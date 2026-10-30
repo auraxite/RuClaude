@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>RuClaude — Советы</title>
+  <style>
+    :root { color-scheme: dark; font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #0b101a; color: #e9eef8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 36px 22px 42px; background: radial-gradient(ellipse 75% 36% at 50% 0%, #20335455, transparent 100%), #0b101a; min-height: 100vh; }
+    main { max-width: 660px; margin: 0 auto; }
+    .masthead { display: flex; align-items: center; gap: 15px; margin: 0 0 27px; }
+    .logo { width: 52px; height: 52px; border-radius: 15px; flex: none; }
+    .eyebrow { margin: 0 0 6px; color: #91a7c8; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    h1 { font-size: 25px; font-weight: 720; letter-spacing: -.035em; line-height: 1.15; margin: 0; }
+    .intro { font-size: 14px; line-height: 1.65; color: #aebed4; margin: 0 0 23px; }
+    .section { border: 1px solid #2a3851; background: #141d2bdc; border-radius: 16px; padding: 21px 22px; margin: 0 0 14px; }
+    .section-heading { display: flex; gap: 11px; align-items: flex-start; margin-bottom: 14px; }
+    .section-icon { display: grid; place-items: center; flex: none; height: 30px; width: 30px; border-radius: 9px; font-size: 16px; }
+    .primary .section-icon { background: #193d34; color: #8be8bd; }
+    .secondary .section-icon { background: #493c20; color: #f0d18a; }
+    h2 { margin: 0; font-size: 16px; font-weight: 680; }
+    .section-caption { margin: 4px 0 0; font-size: 12px; line-height: 1.5; color: #8fa1ba; }
+    ul { list-style: none; margin: 0; padding: 0; }
+    li { position: relative; padding: 11px 0 11px 18px; border-top: 1px solid #26334a; font-size: 14px; color: #b9c7d9; line-height: 1.6; }
+    li::before { content: ''; position: absolute; top: 20px; left: 0; background: #7089af; border-radius: 50%; width: 6px; height: 6px; }
+    li strong { color: #f2f5fb; font-weight: 620; }
+    .note { padding: 14px 16px; border: 1px solid #29354a; border-radius: 12px; background: #111a29; color: #92a5c0; font-size: 12px; line-height: 1.65; }
+    .footer { text-align: center; margin-top: 24px; color: #6e829f; font-size: 11px; }
+    @media (max-width: 480px) { body { padding: 25px 14px; } .section { padding: 17px 16px; } h1 { font-size: 22px; } }
+  </style>
+</head>
+<body>
+<main>
+  <header class="masthead">
+    <img class="logo" src="icons/icon128.png" alt="RuClaude">
+    <div><p class="eyebrow">RuClaude · 1.0.0</p><h1 id="page-title">Советы по использованию</h1></div>
+  </header>
+  <p id="intro" class="intro">Несколько рекомендаций для более предсказуемой работы Claude при подключении через VPN.</p>
+  <section class="section primary" aria-labelledby="essential-title">
+    <div class="section-heading"><span class="section-icon" aria-hidden="true">✓</span><div><h2 id="essential-title">Проверяйте подключение</h2><p id="essential-caption" class="section-caption">Что полезно сделать перед открытием Claude</p></div></div>
+    <ul>
+      <li id="essential-1"><strong>VPN:</strong> убедитесь, что публичный IP относится к выбранной стране.</li>
+      <li id="essential-2"><strong>Защита от утечек:</strong> проверьте WebRTC, IPv6 и DNS; используйте системный kill switch, если он доступен.</li>
+    </ul>
+  </section>
+  <section class="section secondary" aria-labelledby="advice-title">
+    <div class="section-heading"><span class="section-icon" aria-hidden="true">✦</span><div><h2 id="advice-title">Дополнительные рекомендации</h2><p id="advice-caption" class="section-caption">Для последовательных настроек браузера и аккаунта</p></div></div>
+    <ul>
+      <li id="advice-1"><strong>Часовой пояс:</strong> желательно согласовать с регионом IP.</li>
+      <li id="advice-2"><strong>Язык:</strong> можно выбрать язык, распространённый в стране IP.</li>
+      <li id="advice-3"><strong>Телефон и карта:</strong> используйте свои действительные данные; совпадение их страны со страной VPN не является универсальным требованием.</li>
+      <li id="advice-4"><strong>Аккаунт:</strong> избегайте подозрительной активности и следуйте правилам сервиса; вход с нескольких устройств сам по себе не запрещён.</li>
+    </ul>
+  </section>
+  <aside id="note" class="note">Это общие рекомендации, а не официальные требования Anthropic. RuClaude не гарантирует доступ к сервису или защиту от ограничений аккаунта.</aside>
+  <footer class="footer">Auraxite · MIT License</footer>
+</main>
+<script src="tips.js"></script>
+</body>
+</html>
