@@ -15,7 +15,7 @@ const files = [
   'geo-bridge.js', 'geo-main.js', 'language-main.js',
   'popup.html', 'popup.js', 'rules.json', 'site-languages.mjs',
   'style.css', 'timezones.mjs', 'tips.html', 'tips.js',
-  'webrtc-probe.mjs', 'diagnostics.html', 'diagnostics.js', 'webrtc-site-main.js', 'webrtc-site-bridge.js'
+  'webrtc-probe.mjs', 'webrtc-site-main.js', 'webrtc-site-bridge.js'
 ];
 if (platform === 'chromium') files.push('offscreen.html', 'offscreen.js');
 await Promise.all(files.map(file => copyFile(resolve(root, file), resolve(target, file))));
