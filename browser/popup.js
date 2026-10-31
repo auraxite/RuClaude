@@ -9,10 +9,10 @@ let lang = 'ru';
 let storedConfig = null;
 const STR = {
  ru: {
- consider:'Учитывать',browserLanguageLabel:'Язык для сайтов',browserLanguageHint:'Claude откроется только при совпадении языка страны IP.',tips:'Советы по использованию ↗',subtitle:'Геозащита для claude.ai',webrtcLabel:'Проверять WebRTC перед открытием Claude',webrtcHint:'Если найден другой публичный IP или проверка недоступна, Claude блокируется.',geoLabel:'Подменять координаты для Claude',geoHint:'Только для запросов местоположения на claude.ai. IP не меняется.',latLabel:'Широта',lonLabel:'Долгота',webrtcResult:'WebRTC',initialTitle:'Доступ заблокирован',initialText:'Выберите страну и часовой пояс для проверки.',rule:'ПРАВИЛО ДОСТУПА',countryLabel:'Разрешённая страна',chooseCountry:'Выберите страну…',countryHint:'Claude откроется только с IP этой страны.',zoneLabel:'Разрешённый часовой пояс',chooseCountryFirst:'Сначала выберите страну…',zoneHint:'Claude откроется только при совпадении часового пояса страны IP.',save:'Сохранить и проверить IP',lastCheck:'ПОСЛЕДНЯЯ ПРОВЕРКА',publicIP:'Публичный IP',ipCountry:'Страна IP',ipZone:'Часовой пояс IP',checked:'Проверено',source:'Источник',recheck:'↻ Проверить снова',lock:'⛔ Закрыть доступ',openClaude:'Открыть Claude ↗',chooseZone:'Выберите город или регион…',blocked:'Claude заблокирован',checking:'Проверяем IP…',allowed:'Доступ временно разрешён',until:'Доступ до',every:'Повторная проверка — примерно раз в 2 мин.',closed:'Сайт закрыт до следующей успешной проверки.',checkingAction:'Проверяем…',selectError:'Выберите страну и часовой пояс из списка.',commError:'Ошибка связи с расширением',selected:'Выбрано',now:'сейчас',exact:'Требуется точное совпадение часового пояса.',waiting:'Ожидание настройки',none:'Для выбранной страны не найдены часовые пояса.',
+ consider:'Учитывать',webRTCSection:'WebRTC',webRTCGateHint:'Claude откроется только после успешной проверки WebRTC без посторонних публичных IP.',browserLanguageLabel:'Язык для сайтов',browserLanguageHint:'Claude откроется только при совпадении языка страны IP.',tips:'Советы по использованию ↗',subtitle:'Геозащита для claude.ai',webrtcLabel:'Проверять WebRTC перед открытием Claude',webrtcHint:'Если найден другой публичный IP или проверка недоступна, Claude блокируется.',geoLabel:'Подменять координаты для Claude',geoHint:'Только для запросов местоположения на claude.ai. IP не меняется.',latLabel:'Широта',lonLabel:'Долгота',webrtcResult:'WebRTC',initialTitle:'Доступ заблокирован',initialText:'Выберите страну и часовой пояс для проверки.',rule:'ПРАВИЛО ДОСТУПА',countryLabel:'Разрешённая страна',chooseCountry:'Выберите страну…',countryHint:'Claude откроется только с IP этой страны.',zoneLabel:'Разрешённый часовой пояс',chooseCountryFirst:'Сначала выберите страну…',zoneHint:'Claude откроется только при совпадении часового пояса страны IP.',save:'Сохранить и проверить IP',lastCheck:'ПОСЛЕДНЯЯ ПРОВЕРКА',publicIP:'Публичный IP',ipCountry:'Страна IP',ipZone:'Часовой пояс IP',checked:'Проверено',source:'Источник',recheck:'↻ Проверить снова',lock:'⛔ Закрыть доступ',openClaude:'Открыть Claude ↗',chooseZone:'Выберите город или регион…',blocked:'Claude заблокирован',checking:'Проверяем IP…',allowed:'Доступ временно разрешён',until:'Доступ до',every:'Повторная проверка — примерно раз в 2 мин.',closed:'Сайт закрыт до следующей успешной проверки.',checkingAction:'Проверяем…',selectError:'Выберите страну и часовой пояс из списка.',commError:'Ошибка связи с расширением',selected:'Выбрано',now:'сейчас',exact:'Требуется точное совпадение часового пояса.',waiting:'Ожидание настройки',none:'Для выбранной страны не найдены часовые пояса.',
  },
  en: {
- consider:'Include',browserLanguageLabel:'Website language',browserLanguageHint:'Claude will open only if the language matches the IP country.',tips:'Usage tips ↗',subtitle:'Location guard for claude.ai',webrtcLabel:'Check WebRTC before opening Claude',webrtcHint:'Blocks Claude if another public IP is found or the check fails.',geoLabel:'Override coordinates on Claude',geoHint:'For claude.ai geolocation requests only. Does not change IP.',latLabel:'Latitude',lonLabel:'Longitude',webrtcResult:'WebRTC',initialTitle:'Access blocked',initialText:'Choose a country and time zone to check.',rule:'ACCESS RULE',countryLabel:'Allowed country',chooseCountry:'Choose a country…',countryHint:'Claude opens only when your IP is in this country.',zoneLabel:'Allowed time zone',chooseCountryFirst:'Choose a country first…',zoneHint:'Claude opens only when the time zone matches the IP country’s time zone.',save:'Save and check IP',lastCheck:'LAST CHECK',publicIP:'Public IP',ipCountry:'IP country',ipZone:'IP time zone',checked:'Checked at',source:'Source',recheck:'↻ Check again',lock:'⛔ Block access',openClaude:'Open Claude ↗',chooseZone:'Choose a city or region…',blocked:'Claude blocked',checking:'Checking IP…',allowed:'Access temporarily allowed',until:'Access until',every:'Rechecks approximately every 2 minutes.',closed:'Site blocked until the next successful check.',checkingAction:'Checking…',selectError:'Select a country and time zone from the lists.',commError:'Extension communication error',selected:'Selected',now:'now',exact:'Exact time zone match required.',waiting:'Waiting for setup',none:'No time zones available for this country.',
+ consider:'Include',webRTCSection:'WebRTC',webRTCGateHint:'Claude opens only after a successful WebRTC check without unexpected public IP addresses.',browserLanguageLabel:'Website language',browserLanguageHint:'Claude will open only if the language matches the IP country.',tips:'Usage tips ↗',subtitle:'Location guard for claude.ai',webrtcLabel:'Check WebRTC before opening Claude',webrtcHint:'Blocks Claude if another public IP is found or the check fails.',geoLabel:'Override coordinates on Claude',geoHint:'For claude.ai geolocation requests only. Does not change IP.',latLabel:'Latitude',lonLabel:'Longitude',webrtcResult:'WebRTC',initialTitle:'Access blocked',initialText:'Choose a country and time zone to check.',rule:'ACCESS RULE',countryLabel:'Allowed country',chooseCountry:'Choose a country…',countryHint:'Claude opens only when your IP is in this country.',zoneLabel:'Allowed time zone',chooseCountryFirst:'Choose a country first…',zoneHint:'Claude opens only when the time zone matches the IP country’s time zone.',save:'Save and check IP',lastCheck:'LAST CHECK',publicIP:'Public IP',ipCountry:'IP country',ipZone:'IP time zone',checked:'Checked at',source:'Source',recheck:'↻ Check again',lock:'⛔ Block access',openClaude:'Open Claude ↗',chooseZone:'Choose a city or region…',blocked:'Claude blocked',checking:'Checking IP…',allowed:'Access temporarily allowed',until:'Access until',every:'Rechecks approximately every 2 minutes.',closed:'Site blocked until the next successful check.',checkingAction:'Checking…',selectError:'Select a country and time zone from the lists.',commError:'Extension communication error',selected:'Selected',now:'now',exact:'Exact time zone match required.',waiting:'Waiting for setup',none:'No time zones available for this country.',
  }
 };
 const t = key => STR[lang][key] || key;
@@ -131,7 +131,7 @@ function renderStatus(status) {
  el('statusText').textContent=localReason(status?.reason);
  const ip=status?.observed;
  el('ip').textContent=ip?.ip||'—';
- el('webRTCObserved').textContent=ip?.webRTC||'—';
+ el('webRTCObserved').textContent=ip?.webRTC||(el('considerWebRTC').checked?'—':lang==='ru'?'Не учитывается':'Not checked');
  el('actualCountry').textContent=ip?`${ip.countryName||ip.country} (${ip.country})`:'—';
  el('actualZone').textContent=ip?.timezone||'—';
  el('service').textContent=ip?.service||'—';
@@ -140,7 +140,7 @@ function renderStatus(status) {
 }
 function pending(isPending) {
  activeJob=isPending;
- for (const id of ['check','lock']) el(id).disabled=isPending;
+ for (const id of ['check']) el(id).disabled=isPending;
 }
 function setError(error) { el('error').hidden=!error; el('error').textContent=error||''; }
 async function setLanguage(next) {
@@ -180,6 +180,7 @@ function currentSelection() {
  return {country:el('country').value, timezone:el('timezone').value,
    considerTimezone:el('considerTimezone').checked,
    considerLanguage:el('considerLanguage').checked,
+   considerWebRTC:el('considerWebRTC').checked,
    siteLanguage:el('siteLanguage').value};
 }
 async function persistSelection() {
@@ -209,6 +210,7 @@ el('country').addEventListener('change', onCountryChange);
 el('timezone').addEventListener('change', onTimezoneChange);
 el('considerTimezone').addEventListener('change', () => { showZone(); saveCurrentSelection(); });
 el('considerLanguage').addEventListener('change', saveCurrentSelection);
+el('considerWebRTC').addEventListener('change', saveCurrentSelection);
 el('siteLanguage').addEventListener('change', () => {
   if (!el('siteLanguage').value) return;
   storedSiteLanguage = el('siteLanguage').value;
@@ -216,7 +218,6 @@ el('siteLanguage').addEventListener('change', () => {
 });
 el('tipsLink').addEventListener('click', () => chrome.windows.create({url: chrome.runtime.getURL('tips.html'), type: 'popup', width: 710, height: 760}));
 el('check').addEventListener('click', () => queueMutation('CHECK'));
-el('lock').addEventListener('click', () => queueMutation('LOCK'));
 el('language').addEventListener('change', event => { setLanguage(event.target.value).catch(e => setError(e.message)); });
 el('openClaude').addEventListener('click', () => {
   if (lastStatus?.allowed && lastStatus.until > Date.now()) {
@@ -244,6 +245,7 @@ async function init() {
     el('country').value = pref?.country || '';
     el('considerTimezone').checked = pref?.considerTimezone !== false;
     el('considerLanguage').checked = pref?.considerLanguage === true;
+    el('considerWebRTC').checked = pref?.considerWebRTC !== false;
     storedSiteLanguage = pref?.siteLanguage || 'en-US';
     populateSiteLanguages();
     populateZones(pref?.timezone || '');
@@ -252,3 +254,5 @@ async function init() {
 }
 init();
 setInterval(() => { if (lastStatus) renderStatus(lastStatus); }, 3000);
+
+

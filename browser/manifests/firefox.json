@@ -73,6 +73,27 @@
       ],
       "run_at": "document_start",
       "world": "ISOLATED"
+    },
+    {
+      "matches": [
+        "https://browserleaks.com/webrtc*",
+        "https://www.browserleaks.com/webrtc*"
+      ],
+      "js": [
+        "webrtc-site-bridge.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://browserleaks.com/webrtc*",
+        "https://www.browserleaks.com/webrtc*"
+      ],
+      "js": [
+        "webrtc-site-main.js"
+      ],
+      "run_at": "document_idle",
+      "world": "MAIN"
     }
   ],
   "author": "Auraxite",

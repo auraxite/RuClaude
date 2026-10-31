@@ -1,0 +1,9 @@
+node_modules/
+dist/
+*.zip
+*.xpi
+*.crx
+.DS_Store
+Thumbs.db
+*.log
+.env

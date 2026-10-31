@@ -1,12 +1,13 @@
 {
-  "name": "ruclaude",
-  "version": "1.0.1",
+  "name": "ruclaude-monorepo",
   "private": true,
-  "description": "Geo-aware access guard for Claude",
+  "version": "1.0.1",
+  "description": "RuClaude privacy guard and country-based access check for Claude on Chromium, Firefox and Android",
   "scripts": {
-    "build": "npm run build:chromium && npm run build:firefox",
-    "build:chromium": "node scripts/build.mjs chromium",
-    "build:firefox": "node scripts/build.mjs firefox",
-    "test": "node --test tests/*.test.mjs"
+    "build": "npm run build:browser",
+    "build:browser": "npm --prefix browser run build",
+    "build:chromium": "npm --prefix browser run build:chromium",
+    "build:firefox": "npm --prefix browser run build:firefox",
+    "test": "npm --prefix browser test"
   }
 }

@@ -8,6 +8,7 @@ function normalizedConfig(raw) {
   return { country: raw?.country || '', timezone: raw?.timezone || '',
     considerTimezone: raw?.considerTimezone !== false,
     considerLanguage: raw?.considerLanguage === true,
+    considerWebRTC: raw?.considerWebRTC !== false,
     siteLanguage: VALID_LANGUAGES.has(raw?.siteLanguage) ? raw.siteLanguage : 'en-US' };
 }
 let offscreenCreating;
@@ -159,8 +160,6 @@ async function lookupIP() {
 }
 
 async function runCheck() {
-  const { manualLocked } = await chrome.storage.local.get('manualLocked');
-  if (manualLocked) return block('Заблокировано вручную. Нажмите «Проверить снова» для разблокировки.');
   // Deny while checking, not after a network request is already underway.
   await block('Проверка публичного IP…', null, false);
   const config = await getConfig();
@@ -172,9 +171,13 @@ async function runCheck() {
     observed = await lookupIP();
     const result = evaluate(config, observed);
     if (!result.allowed) return block(result.reason, observed);
-    // WebRTC verification is mandatory, not user-configurable.
-    const candidates = await webRTCCheck(observed.ip);
-    observed.webRTC = candidates.join(', ');
+    // Optional WebRTC gate: if enabled, fail closed on missing or mismatched STUN results.
+    if (config.considerWebRTC) {
+      const candidates = await webRTCCheck(observed.ip);
+      observed.webRTC = candidates.join(', ');
+    } else {
+      observed.webRTC = null;
+    }
     // Coordinates are taken from the same IP geolocation response, never real device GPS.
     if (!Number.isFinite(observed.lat) || !Number.isFinite(observed.lon) || Math.abs(observed.lat)>90 || Math.abs(observed.lon)>180) {
       throw new Error('IP geolocation returned no valid coordinates');
@@ -194,9 +197,10 @@ async function saveConfig(payload) {
   if (!validCountry(country)) return block('Выберите страну.');
   const considerTimezone = payload?.considerTimezone !== false;
   const considerLanguage = payload?.considerLanguage === true;
+  const considerWebRTC = payload?.considerWebRTC !== false;
   const siteLanguage = VALID_LANGUAGES.has(payload?.siteLanguage) ? payload.siteLanguage : 'en-US';
   if (considerTimezone && !timezone) return block('Выберите корректный часовой пояс.');
-  await chrome.storage.local.set({ config: { country, timezone, considerTimezone, considerLanguage, siteLanguage }, manualLocked: false, geoConfig:{enabled:false,lat:0,lon:0} });
+  await chrome.storage.local.set({ config: { country, timezone, considerTimezone, considerLanguage, considerWebRTC, siteLanguage }, manualLocked: false, geoConfig:{enabled:false,lat:0,lon:0} });
   return runCheck();
 }
 
@@ -208,6 +212,7 @@ async function ensureAlarms() {
 chrome.runtime.onInstalled.addListener(() => {
   serialized(async () => {
     await ensureAlarms();
+    await chrome.storage.local.remove('manualLocked');
     await block('RuClaude установлен. Выберите разрешённую страну и таймзону.');
   });
 });
@@ -240,12 +245,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     : serialized(async () => {
         if (message.type === 'SAVE') return { status: await saveConfig(message.config), config: await getConfig() };
         if (message.type === 'CHECK') {
-          await chrome.storage.local.set({ manualLocked: false });
           return { status: await runCheck(), config: await getConfig() };
         }
         if (message.type === 'LOCK') {
-          await chrome.storage.local.set({ manualLocked: true });
-          return { status: await block('Заблокировано вручную. Нажмите «Проверить снова» для разблокировки.'), config: await getConfig() };
+          // Incomplete selections must not be undone by a periodic check using old settings.
+          const previous = await getConfig();
+          await chrome.storage.local.set({config:{...previous,country:''}});
+          return { status: await block('Настройки не заполнены. Доступ заблокирован.'), config: await getConfig() };
         }
       });
   promise.then(result => sendResponse({ ok: true, ...result }), error => sendResponse({ ok: false, error: error.message }));
@@ -257,3 +263,32 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 ensureAlarms().catch(console.error);
 // On service worker wake, proactively revoke any orphaned allow lease.
 (async()=>{try {const {status}=await chrome.storage.local.get('status'); if (!status?.allowed || status.until <= Date.now()) await chrome.declarativeNetRequest.updateSessionRules({removeRuleIds:[ALLOW_ID, LANGUAGE_HEADER_ID]});} catch(e){console.warn(e);}})();
+
+// Diagnostic-only comparison. Results cannot alter or bypass the default deny rule.
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message?.type === 'SITE_STUN_RESULT') {
+    if (!sender.tab?.url?.startsWith('https://browserleaks.com/webrtc') && !sender.tab?.url?.startsWith('https://www.browserleaks.com/webrtc')) return false;
+    const result=message.payload || {};
+    chrome.storage.local.set({siteStunDiagnostic:{...result,at:Date.now(),page:sender.tab.url}})
+      .then(()=>sendResponse({ok:true}), e=>sendResponse({ok:false,error:e.message}));
+    return true;
+  }
+  if (message?.type !== 'EXTENSION_STUN_DIAGNOSTIC') return false;
+  (async () => {
+    let result;
+    try {
+      if (chrome.offscreen?.hasDocument) {
+        await ensureOffscreen();
+        result=await chrome.runtime.sendMessage({type:'WEBRTC_PROBE'});
+        if (!result?.ok) throw Error(result?.error || 'WebRTC probe failed');
+      } else {
+        const {probeWebRTC}=await import('./webrtc-probe.mjs');
+        result=await probeWebRTC();
+      }
+      const report={addresses:result.addresses || [], count:result.count || 0, at:Date.now()};
+      await chrome.storage.local.set({extensionStunDiagnostic:report});
+      sendResponse({ok:true, report});
+    } catch (e) { const report={addresses:[],error:String(e.message||e),at:Date.now()}; await chrome.storage.local.set({extensionStunDiagnostic:report}); sendResponse({ok:false,report}); }
+  })();
+  return true;
+});

@@ -9,8 +9,7 @@ const english = {
   'advice-caption': 'For consistent browser and account settings',
   'advice-1': '<strong>Time zone:</strong> ideally match the region of your IP address.',
   'advice-2': '<strong>Language:</strong> you may choose a language commonly used in the IP country.',
-  'advice-3': '<strong>Phone and card:</strong> use your own legitimate details. Matching their countries to the VPN country is not a universal requirement.',
-  'advice-4': '<strong>Account:</strong> avoid suspicious activity and follow the service rules. Signing in from multiple devices is not inherently forbidden.',
+  'advice-3': '<strong>Account:</strong> avoid suspicious activity and follow the service rules. Signing in from multiple devices is not inherently forbidden.',
   note: 'These are general suggestions, not official Anthropic requirements. RuClaude cannot guarantee service access or prevent account restrictions.'
 };
 chrome.storage.local.get('uiLanguage', ({uiLanguage}) => {

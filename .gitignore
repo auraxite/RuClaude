@@ -1,9 +1,32 @@
+# Browser builds / dependencies
+browser/dist/
+browser/node_modules/
 node_modules/
-dist/
-*.zip
-*.xpi
-*.crx
+
+# Android build files and local machine configuration
+.gradle/
+.idea/
+android/.gradle/
+android/.idea/
+android/**/build/
+android/local.properties
+android/captures/
+*.iml
+
+# Signing keys and secrets
+*.jks
+*.keystore
+*.pem
+*.key
+.env
+.env.*
+
+# OS and archives
 .DS_Store
 Thumbs.db
 *.log
-.env
+*.zip
+*.xpi
+*.crx
+*.apk
+*.aab

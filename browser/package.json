@@ -1,0 +1,12 @@
+{
+  "name": "ruclaude",
+  "version": "1.0.1",
+  "private": true,
+  "description": "Geo-aware access guard for Claude",
+  "scripts": {
+    "build": "npm run build:chromium && npm run build:firefox",
+    "build:chromium": "node scripts/build.mjs chromium",
+    "build:firefox": "node scripts/build.mjs firefox",
+    "test": "node --test tests/*.test.mjs"
+  }
+}

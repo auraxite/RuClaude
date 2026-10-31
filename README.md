@@ -1,100 +1,72 @@
 <div align="center">
+  <img src="browser/icons/icon128.png" width="96" alt="RuClaude logo" />
 
-# RuClaude
+  # RuClaude
 
-**Browser extension for checking your connection before opening Claude**
+  **Privacy guard for Claude — an extra protective layer for VPN connections**
 
-[![Version](https://img.shields.io/badge/version-1.0.1-blue)](https://github.com/auraxite/RuClaude)
-[![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Chromium](https://img.shields.io/badge/Chromium-supported-4285F4)](#installation)
-[![Firefox](https://img.shields.io/badge/Firefox-experimental-FF7139)](#installation)
+  **Защитный экран для Claude: проверка страны IP перед открытием сайта или запуском приложения**
 
-Developed by **[Auraxite](https://github.com/auraxite)** · [Русский](#русский) · [English](#english)
-
+  [Releases](https://github.com/auraxite/RuClaude/releases) · [Issues](https://github.com/auraxite/RuClaude/issues) · [MIT License](LICENSE)
 </div>
 
-## Русский
+RuClaude is a free, open-source **Claude privacy guard / IP country checker** for **Chromium, Firefox and Android**. It helps prevent accidental access from an unexpected public IP location when using an existing VPN. RuClaude is **not a VPN, proxy, location anonymizer, or network kill switch**.
 
-**RuClaude** — свободное браузерное расширение, которое проверяет страну публичного IP и, по желанию, часовой пояс перед предоставлением доступа к [Claude](https://claude.ai/). Оно работает с существующим системным VPN, не подключаясь к VPN самостоятельно.
+**RuClaude** — бесплатный защитный слой для Claude: расширения браузера и Android-лаунчер проверяют **страну публичного IP** перед разрешением доступа. Работает вместе с установленным VPN, но не заменяет его защиту от утечек.
 
-### Возможности
+## Features / Возможности
 
-- Выбор разрешённой страны IP и точного часового пояса с автоматическим сохранением настроек.
-- Блокировка доменов Claude по умолчанию через правила браузера до успешной проверки.
-- Проверка публичного IP через `ipwho.is` с резервным сервисом `ipapi.co`.
-- Проверка публичных WebRTC/STUN-адресов, если браузер и сеть позволяют их обнаружить.
-- Кратковременное разрешение доступа с периодической повторной проверкой.
-- Опциональная подмена языковых признаков веб-страницы и приблизительных координат по IP.
-- Интерфейс на русском и английском, страница советов.
+| | Chromium / Firefox | Android |
+|---|---|---|
+| Allowed IP country / Разрешённая страна | ✅ | ✅ |
+| Optional IP time-zone check / Часовой пояс | ✅ | — |
+| Optional WebRTC/STUN check / WebRTC | ✅ | — |
+| Default-deny browser rules / Блокировка запросов | ✅* | — |
+| Launch official Claude app / Запуск Claude | — | ✅ |
+| Russian and English UI / РУ и EN | ✅ | ✅ |
 
-### Установка
+*Browser protection is limited to browser-controlled requests, and cannot guarantee that no connection leaks during network changes. Android only checks before launching; it cannot block Claude traffic afterward or prevent direct launching.*
 
-**Chromium / Chrome / Edge / Ungoogled Chromium**
+## Install / Установка
 
-1. Выполните `npm run build:chromium` (Node.js 18+).
-2. Откройте `chrome://extensions` (в Edge — `edge://extensions`).
-3. Включите **Режим разработчика** и нажмите **Загрузить распакованное расширение**.
-4. Выберите `dist/chromium`, настройте страну и, при необходимости, часовой пояс.
-
-**Firefox (экспериментальная версия)**
-
-1. Выполните `npm run build:firefox` (Node.js 18+).
-2. Откройте `about:debugging#/runtime/this-firefox`.
-3. Выберите **Load Temporary Add-on** и файл `dist/firefox/manifest.json`.
-4. Предоставьте расширению разрешения на сайты Claude, если Firefox запросит их.
-
-Временное дополнение удаляется после перезапуска Firefox. Для постоянной установки требуется подписанная сборка Firefox Add-ons (AMO) или другой разрешённый Mozilla способ распространения.
-
-### Разработка
+**Chromium / Chrome / Ungoogled Chromium / Edge**
 
 ```bash
-npm run build              # Обе сборки
-npm run build:chromium     # Chromium
-npm run build:firefox      # Firefox
+npm run build:chromium
 ```
 
-Исходники остаются общими. `manifest.json` — Chromium; `manifests/firefox.json` — Firefox. Сборщик создаёт `dist/chromium/` и `dist/firefox/`. На Firefox проверка WebRTC запускается в фоновой странице, на Chromium — в offscreen-документе.
+Open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked**, and select `browser/dist/chromium`.
 
-### Ограничения и конфиденциальность
-
-> **RuClaude — дополнительная защита, не VPN kill switch и не гарантия анонимности.** При внезапной смене маршрута VPN запрос может пройти до очередной проверки. Проверка WebRTC не обнаруживает все возможные утечки. IP-геолокация приблизительна, а ошибочное определение страны или часового пояса возможно.
-
-Для геопроверки внешний сервис получает IP, с которого к нему обращается браузер. Никакие номера телефонов и банковских карт RuClaude не запрашивает. Подмена языка или координат не меняет IP и не изменяет правила доступа Anthropic.
-
-Для надёжного предотвращения соединений вне VPN используйте системную блокировку трафика (kill switch). Вопросы можно задавать через [GitHub Issues](https://github.com/auraxite/RuClaude/issues).
-
-## English
-
-**RuClaude** is an open-source browser extension that checks the public IP country and, optionally, the exact time zone before allowing access to [Claude](https://claude.ai/). It works alongside an existing system VPN and does not provide a VPN or proxy.
-
-### Features
-
-- Country allowlist and optional exact time-zone check, with automatically saved settings.
-- Default-deny browser request rules, short access leases and periodic rechecks.
-- Public IP lookups (`ipwho.is`, fallback `ipapi.co`) and WebRTC/STUN candidate checks.
-- Optional page-language and approximate IP-based geolocation overrides.
-- Russian and English UI with a usage tips page.
-
-### Installation
-
-**Chromium:** run `npm run build:chromium`, then load `dist/chromium` using the browser's extensions developer mode.
-
-**Firefox (experimental):** run `npm run build:firefox`, open `about:debugging#/runtime/this-firefox`, choose **Load Temporary Add-on** and select `dist/firefox/manifest.json`. Grant the requested site permissions. Temporary add-ons disappear after Firefox restarts; permanent distribution requires Mozilla signing.
-
-### Building
+**Firefox — experimental / экспериментальная версия**
 
 ```bash
-npm run build
-npm run build:chromium
 npm run build:firefox
 ```
 
-### Privacy and security notes
+Open `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on** → `browser/dist/firefox/manifest.json`. Permanent installation usually requires Mozilla signing.
 
-**This is not a network-level VPN kill switch.** Network changes between checks can allow requests under the previously verified connection. WebRTC checks can fail or miss leaks; IP-derived location is an approximation. The external IP lookup services receive the IP used to make the request. The extension does not read phone numbers or payment-card data.
+**Android**
 
-RuClaude is not affiliated with or endorsed by Anthropic. Please follow applicable service terms and local laws.
+Open `android/` in Android Studio and build/run the `app` module. Requires Android SDK and compatible Android Gradle Plugin/Gradle. The Android app uses public IP services and launches the installed official Claude app after a successful check.
 
-## License
+## Development / Разработка
 
-MIT © 2026 [Auraxite](https://github.com/auraxite). See [LICENSE](LICENSE).
+```bash
+npm run build  # Browser builds
+npm test       # Browser tests
+```
+
+```text
+RuClaude/
+├── browser/          # Shared Chromium / Firefox extension sources
+├── android/          # Android Studio project
+├── package.json      # Browser build commands
+├── README.md
+└── LICENSE
+```
+
+## Privacy & limitations / Конфиденциальность и ограничения
+
+IP lookups use `ipwho.is` with `ipapi.co` as a fallback: those services see the IP making the request. Browser checks are periodically refreshed, so a VPN route change between checks can expose a request. WebRTC tests cannot prove the absence of leaks. On Android, opening Claude directly bypasses RuClaude. For stronger protection, use the VPN client's system-level kill switch. RuClaude does not request phone numbers or payment-card details.
+
+RuClaude is an independent project by **[Auraxite](https://github.com/auraxite)** and is not affiliated with or endorsed by Anthropic. MIT © 2026 Auraxite. Follow applicable laws and the service's terms.

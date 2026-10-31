@@ -38,7 +38,8 @@ input::placeholder { color:#76849c; }
 .detail { display:flex; justify-content:space-between; align-items:start; gap:12px; padding:7px 0; font-size:11px; }
 .detail span { color:#8797b0; white-space:nowrap; }
 .detail strong { color:#d7e2f5; max-width:65%; text-align:right; font-weight:600; overflow-wrap:anywhere; }
-.buttons { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:12px; }
+.buttons { display:grid; grid-template-columns:minmax(0, 1fr); gap:9px; margin-top:12px; }
+.buttons > .button { width:100%; }
 footer { margin-top:20px; padding-top:14px; border-top:1px solid #273248; color:#8694a9; font-size:10.5px; line-height:1.5; }
 footer strong { color:#b7c4d8; }
 .error { background:#4b2533; border:1px solid #9b445f; padding:10px; border-radius:8px; font-size:11px; }
@@ -62,3 +63,7 @@ footer strong { color:#b7c4d8; }
 .check-row { display:flex; align-items:center; gap:8px; margin:8px 0 4px; font-weight:500; cursor:pointer; color:#acb9d0; }
 .check-row input { display:inline-block; width:16px; height:16px; flex:0 0 16px; margin:0; padding:0; accent-color:#8098ff; }
 
+
+.webrtc-setting { margin-top: 17px; }
+.setting-heading { color:#d4deec; font-size:12px; font-weight:650; margin-bottom:8px; }
+.webrtc-setting .check-row { margin-top:0; }
