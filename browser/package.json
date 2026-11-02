@@ -1,6 +1,6 @@
 {
   "name": "ruclaude",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "private": true,
   "description": "Geo-aware access guard for Claude",
   "scripts": {

@@ -42,7 +42,9 @@ jobs:
               echo "Version must be newer than $previous" >&2; exit 1
             fi
             paths=("$component/")
-            if [[ "$component" == windows || "$component" == linux ]]; then paths+=("desktop/"); fi
+            if [[ "$component" == windows || "$component" == linux ]]; then
+              paths=("desktop/src/" "desktop/assets/" "desktop/CMakeLists.txt" "desktop/$component/")
+            fi
             if git diff --quiet "$previous" "$RELEASE_TAG" -- "${paths[@]}"; then
               echo "No changes to $component/ since $previous; refusing version bump" >&2
               exit 1
@@ -125,7 +127,7 @@ jobs:
           Copy-Item desktop/build/Release/RuClaude.exe, desktop/build/Release/RuClaudeService.exe dist/
           windeployqt --release --no-translations dist/RuClaude.exe
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          Copy-Item windows/Install.cmd,windows/Uninstall.cmd dist/
+          Copy-Item desktop/windows/Install.cmd,desktop/windows/Uninstall.cmd dist/
           Compress-Archive -Path dist/* -DestinationPath "ruclaude-windows-x64-${{ needs.validate.outputs.version }}.zip"
       - uses: softprops/action-gh-release@v2
         with:
@@ -149,7 +151,7 @@ jobs:
           cmake --build desktop/build --parallel
           mkdir -p staging/ruclaude-linux/prebuilt
           cp desktop/build/RuClaude desktop/build/RuClaudeService staging/ruclaude-linux/prebuilt/
-          cp -a desktop linux staging/ruclaude-linux/
+          cp -a desktop staging/ruclaude-linux/
           rm -rf staging/ruclaude-linux/desktop/build
           tar -C staging -czf "ruclaude-linux-x86_64-${{ needs.validate.outputs.version }}.tar.gz" ruclaude-linux
       - uses: softprops/action-gh-release@v2

@@ -98,7 +98,7 @@ static SERVICE_STATUS_HANDLE serviceHandle=nullptr;
 static SERVICE_STATUS serviceStatus={};
 static QCoreApplication *runningApp=nullptr;
 static void WINAPI control(DWORD c){if(c==SERVICE_CONTROL_STOP&&runningApp){serviceStatus.dwCurrentState=SERVICE_STOP_PENDING;SetServiceStatus(serviceHandle,&serviceStatus);QMetaObject::invokeMethod(runningApp,"quit",Qt::QueuedConnection);}}
-static void WINAPI startService(DWORD,DWORD*){
+static void WINAPI startService(DWORD, LPWSTR*){
  serviceHandle=RegisterServiceCtrlHandlerW(L"RuClaudeService",control);
  if(!serviceHandle)return;
  serviceStatus.dwServiceType=SERVICE_WIN32_OWN_PROCESS;

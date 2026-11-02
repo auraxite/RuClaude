@@ -30,3 +30,9 @@ Thumbs.db
 *.crx
 *.apk
 *.aab
+
+# Qt/CMake and release output
+/desktop/build/
+/dist/
+/staging/
+/desktop/**/build/
