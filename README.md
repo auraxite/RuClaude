@@ -54,17 +54,6 @@ npm run build  # Browser builds
 npm test       # Browser tests
 ```
 
-```text
-RuClaude/
-├── browser/          # Shared Chromium / Firefox extension sources
-├── linux/            # Linux desktop package and launch scripts
-├── windows/          # Windows desktop app and service
-├── android/          # Android Studio project
-├── package.json      # Browser build commands
-├── README.md
-└── LICENSE
-```
-
 ## Safe vibe coding / Безопасный вайбкоддинг
 
 RuClaude helps keep AI-assisted workflows safer by enforcing a country check before access is allowed. Use it as a guardrail for trusted environments and VPN-backed browsing, especially when running browser-based AI sessions in sensitive or regulated contexts.
@@ -73,6 +62,6 @@ RuClaude помогает держать AI-ассистентские рабо�
 
 ## Privacy & limitations / Конфиденциальность и ограничения
 
-IP lookups use `ipwho.is` with `ipapi.co` as a fallback: those services see the IP making the request. Browser checks are periodically refreshed, so a VPN route change between checks can expose a request. WebRTC tests cannot prove the absence of leaks. On Android, opening Claude directly bypasses RuClaude. RuClaude does not request phone numbers or payment-card details.
+IP lookups use `ipwho.is` with `ipapi.co` as a fallback: those services see the IP making the request. Browser checks are periodically refreshed, so a VPN route change between checks can expose a request. WebRTC tests cannot prove the absence of leaks. On Android, opening Claude directly bypasses RuClaude.
 
 RuClaude is an independent project and is not affiliated with or endorsed by Anthropic. MIT © 2026. Follow applicable laws and the service's terms.
