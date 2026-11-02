@@ -40,12 +40,14 @@ Open `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on** → `
 
 Desktop shells for Linux and Windows are still being refreshed. The current desktop UI is undergoing a migration to a Qt 6-based interface, while the current build remains compatible for testing and packaging.
 
-- Linux: use the scripts in `linux/` (`Install.sh`, `Run.sh`)
-- Windows: build the WPF app in `windows/` with `dotnet publish`
+- Linux x86_64: `ruclaude_1.0.0_amd64.deb` or `ruclaude-1.0.0-1.x86_64.rpm`
+- Windows x64: `ruclaude-windows-x64-1.0.0.exe`
+- Android APK: `ruclaude-android-1.0.0.apk`
+- Source scripts: use the scripts in `linux/` (`Install.sh`, `Run.sh`) and build the WPF app in `windows/` with `dotnet publish`
 
 **Android**
 
-Open `android/` in Android Studio and build/run the `app` module. Requires Android SDK and compatible Android Gradle Plugin/Gradle. The Android app uses public IP services and launches the installed official Claude app after a successful check.
+Download the release APK (`ruclaude-android-1.0.0.apk`) from GitHub Releases, or open `android/` in Android Studio and build/run the `app` module. Requires Android SDK and compatible Android Gradle Plugin/Gradle. The Android app uses public IP services and launches the installed official Claude app after a successful check.
 
 ## Development / Разработка
 
