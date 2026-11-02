@@ -1,0 +1,4 @@
+<RCC><qresource prefix="/">
+<file alias="logo.png">logo.png</file>
+<file alias="countries.json">countries.json</file>
+</qresource></RCC>

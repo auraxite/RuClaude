@@ -1,103 +1,41 @@
 @echo off
 setlocal EnableExtensions EnableDelayedExpansion
-cd /d "%~dp0"
-
-rem If started from the source folder, build the self-contained executables first.
-if not exist "RuClaudeService.exe" (
-  if exist "Build.cmd" (
-    echo No ready-to-run RuClaude files found. Building from sources...
-    call "%~dp0Build.cmd"
-    if errorlevel 1 (
-      echo ERROR: RuClaude build failed.
-      pause
-      exit /b 1
-    )
-    call "%~dp0dist\Install.cmd"
-    exit /b !errorlevel!
-  )
-  echo ERROR: RuClaudeService.exe is missing.
-  pause
-  exit /b 1
+set "ROOT=%~dp0"
+if not exist "%ROOT%RuClaude.exe" (
+ if exist "%ROOT%..\dist\RuClaude.exe" (echo Install from dist folder: dist\Install.cmd & exit /b 1)
+ echo ERROR: Build first using windows\Build.cmd
+ exit /b 1
 )
-if not exist "RuClaude.exe" (
-  echo ERROR: RuClaude.exe is missing.
-  pause
-  exit /b 1
-)
-
-fltmc >nul 2>&1
-if errorlevel 1 (
-  echo ERROR: Run Install.cmd as administrator.
-  pause
-  exit /b 1
-)
-
+fltmc >nul 2>&1 || (echo ERROR: Run as Administrator. & exit /b 1)
+set "DEST=%ProgramFiles%\RuClaude"
+echo Stopping installed service if present...
 sc.exe query RuClaudeService >nul 2>&1
-if not errorlevel 1 goto service_exists
-
-echo Creating RuClaude Windows service...
-sc.exe create RuClaudeService binPath= "\"%~dp0RuClaudeService.exe\"" start= auto DisplayName= "RuClaude"
-if errorlevel 1 goto service_error
-goto configure_recovery
-
-:service_exists
-echo RuClaude service exists. Stopping it for update...
-sc.exe stop RuClaudeService >nul 2>&1
-set /a stop_attempts=0
-:wait_stopped
-sc.exe query RuClaudeService | findstr /R /C:"STATE.*STOPPED" >nul
-if not errorlevel 1 goto configure_service
-set /a stop_attempts+=1
-if !stop_attempts! GEQ 30 (
-  echo ERROR: Existing service did not stop within 30 seconds.
-  sc.exe query RuClaudeService
-  pause
-  exit /b 1
+if not errorlevel 1 (
+ sc.exe stop RuClaudeService >nul 2>&1
+ for /L %%i in (1,1,30) do (
+  sc.exe query RuClaudeService | findstr /R /C:"STATE.*STOPPED" >nul && goto :stopped
+  timeout /t 1 /nobreak >nul
+ )
+ echo ERROR: Service failed to stop.
+ exit /b 1
 )
-timeout /t 1 /nobreak >nul
-goto wait_stopped
-
-:configure_service
-sc.exe config RuClaudeService binPath= "\"%~dp0RuClaudeService.exe\"" start= auto DisplayName= "RuClaude"
-if errorlevel 1 goto service_error
-
-:configure_recovery
-sc.exe failure RuClaudeService reset= 86400 actions= restart/5000/restart/5000/restart/5000 >nul
-
-echo Starting RuClaude service...
-sc.exe start RuClaudeService >nul 2>&1
-rem StartService may return 1056 when already RUNNING; verify actual state instead.
-set /a start_attempts=0
-:wait_running
-sc.exe query RuClaudeService | findstr /R /C:"STATE.*RUNNING" >nul
-if not errorlevel 1 goto service_running
-set /a start_attempts+=1
-if !start_attempts! GEQ 15 (
-  echo ERROR: Service is not running after 15 seconds.
-  sc.exe query RuClaudeService
-  echo Check Windows Event Viewer for application/service errors.
-  pause
-  exit /b 1
+:stopped
+if not exist "%DEST%" mkdir "%DEST%"
+if /I not "%ROOT:~0,-1%"=="%DEST%" (
+ robocopy "%ROOT%" "%DEST%" /E /NFL /NDL /NJH /NJS /NP /XD build dist
+ if !errorlevel! GEQ 8 (echo ERROR: File copy failed. & exit /b 1)
 )
-timeout /t 1 /nobreak >nul
-goto wait_running
-
-:service_running
-rem The service runs as SYSTEM; the interactive app runs without elevation.
-rem Only grant the installing user Modify rights to RuClaude settings/status directory.
 if not exist "%ProgramData%\RuClaude" mkdir "%ProgramData%\RuClaude"
 icacls "%ProgramData%\RuClaude" /grant "%USERDOMAIN%\%USERNAME%:(OI)(CI)M" >nul
+sc.exe query RuClaudeService >nul 2>&1
 if errorlevel 1 (
-  echo WARNING: Could not grant settings permissions. The GUI may not save changes.
+ sc.exe create RuClaudeService binPath= "\"%DEST%\RuClaudeService.exe\"" start= auto DisplayName= "RuClaude" || exit /b 1
+) else (
+ sc.exe config RuClaudeService binPath= "\"%DEST%\RuClaudeService.exe\"" start= auto DisplayName= "RuClaude" || exit /b 1
 )
-echo RuClaude service is RUNNING.
-start "" "%~dp0RuClaude.exe"
-echo RuClaude installed and launched. Keep this folder in its permanent location.
-pause
+sc.exe failure RuClaudeService reset= 86400 actions= restart/5000/restart/5000/restart/5000 >nul
+sc.exe start RuClaudeService
+if errorlevel 1 (echo ERROR: Service did not start. & exit /b 1)
+start "" "%DEST%\RuClaude.exe"
+echo Installed to %DEST%
 exit /b 0
-
-:service_error
-echo ERROR: Unable to create or update RuClaude service.
-sc.exe query RuClaudeService
-pause
-exit /b 1

@@ -1,9 +1,8 @@
 [Desktop Entry]
+Type=Application
 Name=RuClaude
-Comment=Country-based network filter for Claude
-Comment[ru]=Проверка страны IP для Claude
+Comment=Claude IP-country network filter
 Exec=/usr/bin/ruclaude
 Icon=ruclaude
 Terminal=false
-Type=Application
 Categories=Network;Utility;
